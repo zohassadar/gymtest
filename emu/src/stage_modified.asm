@@ -20,11 +20,16 @@ ghostPiece:
         lda playState
         cmp #3
         bpl @noGhost
+        lda currentPiece
+        asl
+        asl
+        sta generalCounter2
         lda tetriminoY
         sta tmp3
 @loop:
         inc tetriminoY
-        jsr isPositionValid
+        ldx generalCounter2
+        jsr isPositionValidPresetX
         bcc @loop
         dec tetriminoY
 
@@ -82,12 +87,18 @@ stageSpriteForCurrentPiece_actual:
         clc
         adc pieceTileModifier
 @storeTile:
+        ; all tiles will be the same
         ldy oamStagingLength
         sta oamStaging+1,y
         sta oamStaging+5,y
         sta oamStaging+9,y
         sta oamStaging+13,y
-        lda #$04
+        lda #$02 ; all attributes will be the same
+        sta oamStaging+2,y
+        sta oamStaging+6,y
+        sta oamStaging+10,y
+        sta oamStaging+14,y
+        asl ; use 2 to get 4 for counter
         sta tileCounter
          ; y is oam y coordinate
 @stageMino:  
@@ -104,8 +115,6 @@ stageSpriteForCurrentPiece_actual:
         sta oamStaging,y
         iny ; oam tile
         iny ; oam attribute
-        lda #$02
-        sta oamStaging,y
         iny ; oam x coordinate
         lda orientationXOffsets,x
         asl a
@@ -130,6 +139,7 @@ isPositionValid:
         asl a
         asl a
         tax
+isPositionValidPresetX:
         lda #$04
         sta generalCounter3
         clc ; carry only needs to be cleared entering loop
