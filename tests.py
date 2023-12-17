@@ -22,6 +22,15 @@ class Branch:
     results = [0xA8]
 
 
+class SpriteClear:
+    original = "emu/src/sprite_clear_orig.asm"
+    modified = "emu/src/sprite_clear_mod.asm"
+    inputs = dict(
+        playState=[0],
+    )
+    playfields = ["empty"]
+    results = list(i for i in range(0x200,0x300,0x04))
+
 
 class StageTetrimino:
     original = "emu/src/stage_original.asm"
@@ -209,6 +218,7 @@ testcases = [
     StageTetriminoHidden,
     IsPositionValid,
     LockTetrimino,
+    SpriteClear,
 ]
 
 

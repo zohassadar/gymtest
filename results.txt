@@ -37,3 +37,6 @@ Min: 91/55 Max: 426/246 Mean: 191/102 Median: 141/68
 LockTetrimino: 80/80 succeeded in 0.29 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
+SpriteClear: 1/1 succeeded in 0.04 seconds
+Min: 2869/1030 Max: 2869/1030 Mean: 2869/1030 Median: 2869/1030
+
