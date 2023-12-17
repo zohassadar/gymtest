@@ -177,7 +177,7 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
 .include "ram.asm"
 
 .segment    "PRG_chunk2": absolute
-
+.align $100
 musicSelectionTable:
         .byte   $03,$04,$05,$FF,$06,$07,$08,$FF
 
@@ -188,6 +188,7 @@ multBy10Table:
         .byte   $50,$5A,$64,$6E,$78,$82,$8C,$96
         .byte   $A0,$AA,$B4,$BE
 
+.align $100
 orientationTable:
         .byte   $00,$7B,$FF,$00,$7B,$00,$00,$7B
         .byte   $01,$FF,$7B,$00,$FF,$7B,$00,$00
@@ -219,7 +220,7 @@ orientationTable:
         .byte   $00,$7B,$FE,$00,$7B,$FF,$00,$7B
         .byte   $00,$00,$7B,$01,$00,$FF,$00,$00
         .byte   $FF,$00,$00,$FF,$00,$00,$FF,$00
-
+.align $100
 orientationYOffsets:
         .byte   $00,$00,$00,$FF ; t
         .byte   $FF,$00,$00,$01
@@ -248,7 +249,7 @@ orientationYOffsets:
         .byte   $00,$00,$00,$00
 
         .byte   $00,$00,$00,$00 ; hidden
-
+.align $100
 orientationXOffsets:
         .byte   $FF,$00,$01,$00 ; t
         .byte   $00,$00,$01,$00
@@ -277,7 +278,7 @@ orientationXOffsets:
         .byte   $FE,$FF,$00,$01
 
         .byte   $00,$00,$00,$00 ; hidden
-
+.align $100
 orientationTiles:
         .byte $7B,$7B,$7B,$7B   ; t
         .byte $7D,$7D,$7D,$7D   ; j
@@ -287,6 +288,5 @@ orientationTiles:
         .byte $7C,$7C,$7C,$7C   ; l
         .byte $7B,$7B           ; i
         .byte EMPTY_TILE
-
 
 .segment    "PRG_chunk1": absolute
