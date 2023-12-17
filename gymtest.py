@@ -65,7 +65,132 @@ class LockTetrimino:
     results = list(i for i in range(0x400, 0x500)) + [0x57]
 
 
+class LockTetriminoGroup1:
+    original = "emu/src/lock_original.asm"
+    modified = "emu/src/lock_modified.asm"
+    inputs = dict(
+        tetriminoY=[0, 1, 18, 19],
+        tetriminoX=[1, 2, 7, 8],
+        currentPiece=[
+            0x00,  # t up
+            0x05,  # j up
+            0x10,  # l up,
+        ],
+        playfieldAddrHi=[4],
+    )
+    playfields = ["empty"]
+    results = list(i for i in range(0x400, 0x500)) + [0x57]
+
+
+class LockTetriminoGroup2:
+    original = "emu/src/lock_original.asm"
+    modified = "emu/src/lock_modified.asm"
+    inputs = dict(
+        tetriminoY=[0, 1, 17, 18],
+        tetriminoX=[1, 2, 8, 9],
+        currentPiece=[
+            0x02,  # t down
+            0x07,  # j down
+            0x08,  # z horiz
+            0x0B,  # s horiz
+            0x0E,  # l down
+        ],
+        playfieldAddrHi=[4],
+    )
+    playfields = ["empty"]
+    results = list(i for i in range(0x400, 0x500)) + [0x57]
+
+
+class LockTetriminoGroup3:
+    original = "emu/src/lock_original.asm"
+    modified = "emu/src/lock_modified.asm"
+    inputs = dict(
+        tetriminoY=[0, 1, 17, 18],
+        tetriminoX=[0, 1, 7, 8],
+        currentPiece=[
+            0x00,  # t right
+            0x06,  # j right
+            0x09,  # z vert
+            0x0C,  # s vert
+            0x0D,  # l right
+        ],
+        playfieldAddrHi=[4],
+    )
+    playfields = ["empty"]
+    results = list(i for i in range(0x400, 0x500)) + [0x57]
+
+
+class LockTetriminoGroup4:
+    original = "emu/src/lock_original.asm"
+    modified = "emu/src/lock_modified.asm"
+    inputs = dict(
+        tetriminoY=[0, 1, 17, 18],
+        tetriminoX=[1, 2, 8, 9],
+        currentPiece=[
+            0x03,  # t left
+            0x06,  # j left
+            0x0D,  # l left
+        ],
+        playfieldAddrHi=[4],
+    )
+    playfields = ["empty"]
+    results = list(i for i in range(0x400, 0x500)) + [0x57]
+
+
+class LockTetriminoIHoriz:
+    original = "emu/src/lock_original.asm"
+    modified = "emu/src/lock_modified.asm"
+    inputs = dict(
+        tetriminoY=[0, 1, 18, 19],
+        tetriminoX=[2, 3, 7, 8],
+        currentPiece=[
+            0x10,  # i horiz
+        ],
+        playfieldAddrHi=[4],
+    )
+    playfields = ["empty"]
+    results = list(i for i in range(0x400, 0x500)) + [0x57]
+
+
+class LockTetriminoIVert:
+    original = "emu/src/lock_original.asm"
+    modified = "emu/src/lock_modified.asm"
+    inputs = dict(
+        tetriminoY=[0, 1, 17, 18],
+        tetriminoX=[0, 1, 8, 9],
+        currentPiece=[
+            0x11,  # i Vert
+        ],
+        playfieldAddrHi=[4],
+    )
+    playfields = ["empty"]
+    results = list(i for i in range(0x400, 0x500)) + [0x57]
+
+
+class LockTetriminoO:
+    original = "emu/src/lock_original.asm"
+    modified = "emu/src/lock_modified.asm"
+    inputs = dict(
+        tetriminoY=[0, 1, 17, 18],
+        tetriminoX=[1, 2, 8, 9],
+        currentPiece=[
+            0x0A,  # O
+        ],
+        playfieldAddrHi=[4],
+    )
+    playfields = ["empty"]
+    results = list(i for i in range(0x400, 0x500)) + [0x57]
+
+
 testcases = [
+    LockTetrimino,
+    LockTetriminoGroup1,
+    LockTetriminoGroup2,
+    LockTetriminoGroup3,
+    LockTetriminoGroup4,
+    LockTetriminoIHoriz,
+    LockTetriminoIVert,
+    LockTetriminoO,
     StageTetrimino,
     StageTetriminoHidden,
     IsPositionValid,
@@ -351,6 +476,7 @@ def run_testcase(testcase):
                     f"{result:04x} Expected: {expected[result]} Result: {tested[result]}  Inputs: {named_inputs!r}"
                 )
                 failed += 1
+                break
     return (
         total,
         failed,
