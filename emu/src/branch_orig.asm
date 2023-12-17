@@ -1,6 +1,5 @@
 
 marker = $EF
-result = $7FF
 
 .include "common.asm"
         jsr branchOnExample
