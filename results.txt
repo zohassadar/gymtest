@@ -1,0 +1,35 @@
+LockTetrimino: 80/80 succeeded in 1.07 seconds
+Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
+
+LockTetriminoGroup1: 48/48 succeeded in 0.67 seconds
+Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
+
+LockTetriminoGroup2: 80/80 succeeded in 1.03 seconds
+Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
+
+LockTetriminoGroup3: 80/80 succeeded in 1.05 seconds
+Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
+
+LockTetriminoGroup4: 48/48 succeeded in 0.66 seconds
+Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
+
+LockTetriminoIHoriz: 16/16 succeeded in 0.28 seconds
+Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
+
+LockTetriminoIVert: 16/16 succeeded in 0.23 seconds
+Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
+
+LockTetriminoO: 16/16 succeeded in 0.24 seconds
+Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
+
+StageTetrimino: 400/400 succeeded in 5.73 seconds
+Min: 614/405 Max: 9501/5505 Mean: 1603/978 Median: 698/452
+
+StageTetriminoHidden: 24/24 succeeded in 0.38 seconds
+Min: 614/405 Max: 623/414 Mean: 618/410 Median: 618/410
+
+IsPositionValid: 144/144 succeeded in 1.75 seconds
+Min: 91/55 Max: 426/246 Mean: 191/102 Median: 141/68
+
+LockTetrimino: 80/80 succeeded in 1.13 seconds
+Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
