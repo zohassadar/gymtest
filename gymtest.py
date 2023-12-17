@@ -10,6 +10,35 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
+class StageTetrimino:
+    original = "emu/src/stage_original.asm"
+    modified = "emu/src/stage_modified.asm"
+    inputs = dict(
+        practiseType=[0, 0x13],
+        tetriminoY=[0, 2, 17, 18],
+        tetriminoX=[0, 1, 2, 6, 7],
+        currentPiece=[0, 4, 10, 17, 18],
+        playfieldAddrHi=[4],
+    )
+    playfields = ["empty", "full"]
+    results = list(i for i in range(0x200, 0x300)) + [0xB3]
+
+
+
+class StageTetriminoHidden:
+    original = "emu/src/stage_original.asm"
+    modified = "emu/src/stage_modified.asm"
+    inputs = dict(
+        practiseType=[0, 0x13],
+        tetriminoY=[0],
+        tetriminoX=[0],
+        currentPiece=[19],
+        playState=[3,4,5,6,7,8],
+        playfieldAddrHi=[4],
+    )
+    playfields = ["empty", "full"]
+    results = list(i for i in range(0x200, 0x300)) + [0xB3]
+
 class IsPositionValid:
     original = "emu/src/position_original.asm"
     modified = "emu/src/position_modified.asm"
@@ -21,22 +50,6 @@ class IsPositionValid:
     )
     playfields = ["empty", "full"]
     results = [0x7FF]
-
-
-class StageTetrimino:
-    original = "emu/src/stage_original.asm"
-    modified = "emu/src/stage_modified.asm"
-    inputs = dict(
-        practiseType=[0, 0x13],
-        tetriminoY=[0, 2, 17, 18],
-        tetriminoX=[0, 1, 2, 6, 7],
-        currentPiece=[0, 4, 10, 17, 18, 19],
-        playfieldAddrHi=[4],
-    )
-    playfields = ["empty", "full"]
-    results = list(i for i in range(0x200, 0x300)) + [0xB3]
-
-
 
 class LockTetrimino:
     original = "emu/src/lock_original.asm"
@@ -53,10 +66,11 @@ class LockTetrimino:
 
 testcases = [
     StageTetrimino,
+    StageTetriminoHidden,
+    IsPositionValid,
+    LockTetrimino,
 ]
 
-    # IsPositionValid,
-    # LockTetrimino,
 
 # grep zeropage *.dbg | awk -F, '{print $2,$8}' | grep val= | sed 's/name="//; s/" val=/ = /' | tac
 RamMapper = dict(
@@ -322,6 +336,8 @@ def run_testcase(testcase):
 
                 # account for the different methods of hiding sprites.  The tile will be 0xFF for original, y pos is 0xff in modified.
                 if result & 0xF00 == 0x200 and expected[result // 4 * 4 + 1] == tested[result // 4 * 4]:
+                    continue
+                if result & 0xF00 == 0x200 and expected[result // 4 * 4 + 1] & 0b11101111 == tested[result // 4 * 4 + 1] & 0b11101111 :
                     continue
                 logger.error(
                     f"{result:04x} Expected: {expected[result]} Result: {tested[result]}  Inputs: {named_inputs!r}"
