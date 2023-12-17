@@ -1,36 +1,39 @@
-LockTetrimino: 80/80 succeeded in 0.30 seconds
+Branch: 1/1 succeeded in 0.07 seconds
+Min: 74/46 Max: 74/46 Mean: 74/46 Median: 74/46
+
+LockTetrimino: 80/80 succeeded in 0.32 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
 LockTetriminoGroup1: 48/48 succeeded in 0.19 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoGroup2: 80/80 succeeded in 1.06 seconds
+LockTetriminoGroup2: 80/80 succeeded in 0.30 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoGroup3: 80/80 succeeded in 0.90 seconds
+LockTetriminoGroup3: 80/80 succeeded in 0.81 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoGroup4: 48/48 succeeded in 0.21 seconds
+LockTetriminoGroup4: 48/48 succeeded in 0.20 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoIHoriz: 16/16 succeeded in 0.11 seconds
+LockTetriminoIHoriz: 16/16 succeeded in 0.09 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoIVert: 16/16 succeeded in 0.09 seconds
+LockTetriminoIVert: 16/16 succeeded in 0.10 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoO: 16/16 succeeded in 0.09 seconds
+LockTetriminoO: 16/16 succeeded in 0.10 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-StageTetrimino: 400/400 succeeded in 2.38 seconds
-Min: 614/399 Max: 9501/5383 Mean: 1603/963 Median: 698/448
+StageTetrimino: 400/400 succeeded in 2.16 seconds
+Min: 617/399 Max: 9449/5383 Mean: 1601/963 Median: 700/448
 
 StageTetriminoHidden: 24/24 succeeded in 0.13 seconds
-Min: 614/399 Max: 623/408 Mean: 618/404 Median: 618/404
+Min: 617/399 Max: 626/408 Mean: 622/404 Median: 622/404
 
-IsPositionValid: 144/144 succeeded in 0.51 seconds
+IsPositionValid: 144/144 succeeded in 0.56 seconds
 Min: 91/55 Max: 426/246 Mean: 191/102 Median: 141/68
 
-LockTetrimino: 80/80 succeeded in 0.30 seconds
+LockTetrimino: 80/80 succeeded in 0.29 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 

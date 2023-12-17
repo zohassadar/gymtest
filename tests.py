@@ -12,6 +12,17 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
+class Branch:
+    original = "emu/src/branch_orig.asm"
+    modified = "emu/src/branch_mod.asm"
+    inputs = dict(
+        playState=[0],
+    )
+    playfields = ["empty"]
+    results = [0xA8]
+
+
+
 class StageTetrimino:
     original = "emu/src/stage_original.asm"
     modified = "emu/src/stage_modified.asm"
@@ -185,6 +196,7 @@ class LockTetriminoO:
 
 
 testcases = [
+    Branch,
     LockTetrimino,
     LockTetriminoGroup1,
     LockTetriminoGroup2,
