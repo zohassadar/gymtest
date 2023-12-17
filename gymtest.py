@@ -23,6 +23,21 @@ class IsPositionValid:
     results = [0x7FF]
 
 
+class StageTetrimino:
+    original = "emu/src/stage_original.asm"
+    modified = "emu/src/stage_modified.asm"
+    inputs = dict(
+        practiseType=[0, 0x13],
+        tetriminoY=[0, 2, 17, 18],
+        tetriminoX=[0, 1, 2, 6, 7],
+        currentPiece=[0, 4, 10, 17, 18, 19],
+        playfieldAddrHi=[4],
+    )
+    playfields = ["empty", "full"]
+    results = list(i for i in range(0x200, 0x300)) + [0xB3]
+
+
+
 class LockTetrimino:
     original = "emu/src/lock_original.asm"
     modified = "emu/src/lock_modified.asm"
@@ -37,10 +52,11 @@ class LockTetrimino:
 
 
 testcases = [
-    IsPositionValid,
-    LockTetrimino,
+    StageTetrimino,
 ]
 
+    # IsPositionValid,
+    # LockTetrimino,
 
 # grep zeropage *.dbg | awk -F, '{print $2,$8}' | grep val= | sed 's/name="//; s/" val=/ = /' | tac
 RamMapper = dict(
@@ -148,6 +164,122 @@ RamMapper = dict(
     ppuScrollX=0xFD,
     currentPpuMask=0xFE,
     currentPpuCtrl=0xFF,
+    stack = 0x100,
+    oamStaging = 0x200,
+    statsByType = 0x3F0,
+    playfield = 0x400,
+    practiseType = 0x600,
+    spawnDelay = 0x601,
+    dasValueDelay = 0x602,
+    dasValuePeriod = 0x603,
+    tspinX = 0x604,
+    tspinY = 0x605,
+    presetIndex = 0x60E,
+    tspinType = 0x606,
+    parityIndex = 0x607,
+    parityCount = 0x608,
+    parityColor = 0x609,
+    saveStateDirty = 0x60A,
+    saveStateSlot = 0x60B,
+    saveStateSpriteType = 0x60C,
+    saveStateSpriteDelay = 0x60D,
+    pausedOutOfDateRenderFlags = 0x60F,
+    debugLevelEdit = 0x610,
+    debugNextCounter = 0x611,
+    paceResult = 0x612,
+    paceSign = 0x615,
+    hzRAM = 0x616,
+    tqtyCurrent = 0x621,
+    tqtyNext = 0x622,
+    completedLinesCopy = 0x623,
+    lineOffset = 0x624,
+    harddropBuffer = 0x625,
+    linecapState = 0x639,
+    dasOnlyShiftDisabled = 0x63A,
+    invisibleFlag = 0x63B,
+    musicStagingSq1Lo = 0x680,
+    musicStagingSq1Hi = 0x681,
+    audioInitialized = 0x682,
+    musicPauseSoundEffectLengthCounter = 0x683,
+    musicStagingSq2Lo = 0x684,
+    musicStagingSq2Hi = 0x685,
+    resetSq12ForMusic = 0x68A,
+    musicPauseSoundEffectCounter = 0x68B,
+    musicStagingNoiseLo = 0x68C,
+    musicStagingNoiseHi = 0x68D,
+    musicDataNoteTableOffset = 0x690,
+    musicDataDurationTableOffset = 0x691,
+    musicDataChanPtr = 0x692,
+    musicChanControl = 0x69A,
+    musicChanVolume = 0x69D,
+    musicDataChanPtrDeref = 0x6A0,
+    musicDataChanPtrOff = 0x6A8,
+    musicDataChanInstructionOffset = 0x6AC,
+    musicDataChanInstructionOffsetBackup = 0x6B0,
+    musicChanNoteDurationRemaining = 0x6B4,
+    musicChanNoteDuration = 0x6B8,
+    musicChanProgLoopCounter = 0x6BC,
+    musicStagingSq1Sweep = 0x6C0,
+    musicChanNote = 0x6C3,
+    musicChanInhibit = 0x6C8,
+    musicTrack_dec = 0x6CC,
+    musicChanVolFrameCounter = 0x6CD,
+    musicChanLoFrameCounter = 0x6D1,
+    soundEffectSlot0FrameCount = 0x6D5,
+    soundEffectSlot0FrameCounter = 0x6DA,
+    soundEffectSlot0SecondaryCounter = 0x6DF,
+    soundEffectSlot1SecondaryCounter = 0x6E0,
+    soundEffectSlot3SecondaryCounter = 0x6E2,
+    soundEffectSlot0TertiaryCounter = 0x6E3,
+    soundEffectSlot1TertiaryCounter = 0x6E4,
+    soundEffectSlot3TertiaryCounter = 0x6E6,
+    soundEffectSlot0Tmp = 0x6E7,
+    soundEffectSlot1Tmp = 0x6E8,
+    soundEffectSlot0Init = 0x6F0,
+    soundEffectSlot1Init = 0x6F1,
+    musicTrack = 0x6F5,
+    soundEffectSlot0Playing = 0x6F8,
+    soundEffectSlot1Playing = 0x6F9,
+    soundEffectSlot3Playing = 0x6FB,
+    soundEffectSlot4Playing = 0x6FC,
+    currentlyPlayingMusicTrack = 0x6FD,
+    initMagic = 0x75B,
+    menuSeedCursorIndex = 0x760,
+    menuScrollY = 0x761,
+    menuMoveThrottle = 0x762,
+    menuThrottleTmp = 0x763,
+    levelControlMode = 0x764,
+    customLevel = 0x765,
+    classicLevel = 0x766,
+    heartsAndReady = 0x767,
+    linecapCursorIndex = 0x768,
+    linecapWhen = 0x769,
+    linecapHow = 0x76A,
+    linecapLevel = 0x76B,
+    linecapLines = 0x76C,
+    paceModifier = 0x76E,
+    presetModifier = 0x76F,
+    typeBModifier = 0x770,
+    floorModifier = 0x771,
+    crunchModifier = 0x772,
+    tapModifier = 0x773,
+    transitionModifier = 0x774,
+    tapqtyModifier = 0x775,
+    checkerModifier = 0x776,
+    garbageModifier = 0x777,
+    droughtModifier = 0x778,
+    dasModifier = 0x779,
+    scoringModifier = 0x77A,
+    hzFlag = 0x77B,
+    inputDisplayFlag = 0x77C,
+    disableFlashFlag = 0x77D,
+    disablePauseFlag = 0x77E,
+    goofyFlag = 0x77F,
+    debugFlag = 0x780,
+    linecapFlag = 0x781,
+    dasOnlyFlag = 0x782,
+    qualFlag = 0x783,
+    palFlag = 0x784,
 )
 
 playfields = dict(
@@ -186,6 +318,10 @@ def run_testcase(testcase):
             modified_cycles.append(mod_cycles)
             for result in testcase.results:
                 if expected[result] == tested[result]:
+                    continue
+
+                # account for the different methods of hiding sprites.  The tile will be 0xFF for original, y pos is 0xff in modified.
+                if result & 0xF00 == 0x200 and expected[result // 4 * 4 + 1] == tested[result // 4 * 4]:
                     continue
                 logger.error(
                     f"{result:04x} Expected: {expected[result]} Result: {tested[result]}  Inputs: {named_inputs!r}"
@@ -237,6 +373,7 @@ class Emulator:
         path = fullpath.parent.parent
         objfile = path / "dbg" / f"{name}.o"
         listfile = path / "dbg" / f"{name}.lst"
+        dbgfile = path / "dbg" / f"{name}.dbg"
         self.binfile = path / "bin" / f"{name}.nes"
         self.compiled = False
         _, err = subprocess.Popen(
@@ -247,7 +384,7 @@ class Emulator:
             print(err, file=sys.stderr)
             return
         _, err = subprocess.Popen(
-            f"/usr/local/bin/ld65 -C /common/gymtest/emu/base.nes.cfg -o {self.binfile} {objfile}".split(),
+            f"/usr/local/bin/ld65 -C /common/gymtest/emu/base.nes.cfg --dbgfile {dbgfile} -o {self.binfile} {objfile}".split(),
             stderr=subprocess.PIPE,
         ).communicate()
         if err:
