@@ -1,12 +1,14 @@
 import itertools
 import logging
 import pathlib
+import statistics
 import subprocess
 import sys
 import time
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
 
 class IsPositionValid:
     original = "emu/src/position_original.asm"
@@ -20,17 +22,19 @@ class IsPositionValid:
     playfields = ["empty", "full"]
     results = [0x7FF]
 
+
 class LockTetrimino:
     original = "emu/src/lock_original.asm"
     modified = "emu/src/lock_modified.asm"
     inputs = dict(
-        tetriminoY=[0, 2, 17,18],
+        tetriminoY=[0, 2, 17, 18],
         tetriminoX=[1, 2, 6, 7],
         currentPiece=[0, 4, 10, 17, 18],
         playfieldAddrHi=[4],
     )
     playfields = ["empty"]
-    results = list(i for i in range(0x400,0x500)) + [0x57]
+    results = list(i for i in range(0x400, 0x500)) + [0x57]
+
 
 testcases = [
     IsPositionValid,
@@ -152,9 +156,9 @@ playfields = dict(
 )
 
 
-
 def sign(value):
     return 256 + value if value < 0 else value
+
 
 def run_testcase(testcase):
     total = 0
@@ -164,18 +168,22 @@ def run_testcase(testcase):
     tests = itertools.product(*testcase.inputs.values())
     original = Emulator(testcase.original)
     modified = Emulator(testcase.modified)
+    original_cycles = []
+    modified_cycles = []
     if not (original.compiled and modified.compiled):
         return total, failed
     for inputs in tests:
         for playfield in testcase.playfields:
-            total+=1
+            total += 1
             rambuffer[0x400:0x500] = playfields[playfield]
             named_inputs = list((key, value) for key, value in zip(names, inputs))
             for key, value in named_inputs:
                 logger.debug(f"Setting {key} to {value}")
                 rambuffer[RamMapper[key]] = sign(value)
-            expected = original.run(rambuffer)
-            tested = modified.run(rambuffer)
+            expected, orig_cycles = original.run(rambuffer)
+            original_cycles.append(orig_cycles)
+            tested, mod_cycles = modified.run(rambuffer)
+            modified_cycles.append(mod_cycles)
             for result in testcase.results:
                 if expected[result] == tested[result]:
                     continue
@@ -183,15 +191,43 @@ def run_testcase(testcase):
                     f"{result:04x} Expected: {expected[result]} Result: {tested[result]}  Inputs: {named_inputs!r}"
                 )
                 failed += 1
-    return total, failed
+    return (
+        total,
+        failed,
+        min(original_cycles),
+        min(modified_cycles),
+        max(original_cycles),
+        max(modified_cycles),
+        statistics.mean(original_cycles),
+        statistics.mean(modified_cycles),
+        statistics.median(original_cycles),
+        statistics.median(modified_cycles),
+    )
 
 
 def main():
     for testcase in testcases:
         start = time.perf_counter()
-        total, failed = run_testcase(testcase)
+        (
+            total,
+            failed,
+            orig_min,
+            mod_min,
+            orig_max,
+            mod_max,
+            orig_mean,
+            mod_mean,
+            orig_med,
+            mod_med,
+        ) = run_testcase(testcase)
         finish = time.perf_counter()
-        print(f"{testcase.__name__}: {total-failed}/{total} succeeded in {finish-start:.2f} seconds")
+        print(
+            f"{testcase.__name__}: {total-failed}/{total} succeeded in {finish-start:.2f} seconds"
+        )
+        print(
+            f"Min: {orig_min}/{mod_min} Max: {orig_max}/{mod_max} Mean: {orig_mean:.0f}/{mod_mean:.0f} Median: {orig_med:.0f}/{mod_med:.0f}\n"
+        )
+
 
 class Emulator:
     def __init__(self, assembly: str):
@@ -230,10 +266,10 @@ class Emulator:
             input=open(self.binfile, "rb").read() + rambuffer
         )
         if b"Cycles" in error:
-            logger.debug(error.decode())
-        elif error:
-            logger.error(error)
-        return result
+            cycles = int(error.decode().split(": ")[1])
+        else:
+            raise Exception(error)
+        return result, cycles
 
 
 if __name__ == "__main__":
