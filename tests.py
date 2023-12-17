@@ -506,7 +506,10 @@ def run_testcase(testcase):
 
 
 def main():
+    arg = sys.argv[1] if sys.argv[1:] else None
     for testcase in testcases:
+        if arg and arg not in testcase.__name__:
+            continue
         start = time.perf_counter()
         (
             total,
