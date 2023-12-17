@@ -1,35 +1,35 @@
-LockTetrimino: 80/80 succeeded in 1.07 seconds
+LockTetrimino: 80/80 succeeded in 0.30 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoGroup1: 48/48 succeeded in 0.67 seconds
+LockTetriminoGroup1: 48/48 succeeded in 0.19 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoGroup2: 80/80 succeeded in 1.03 seconds
+LockTetriminoGroup2: 80/80 succeeded in 1.06 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoGroup3: 80/80 succeeded in 1.05 seconds
+LockTetriminoGroup3: 80/80 succeeded in 0.90 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoGroup4: 48/48 succeeded in 0.66 seconds
+LockTetriminoGroup4: 48/48 succeeded in 0.21 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoIHoriz: 16/16 succeeded in 0.28 seconds
+LockTetriminoIHoriz: 16/16 succeeded in 0.11 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoIVert: 16/16 succeeded in 0.23 seconds
+LockTetriminoIVert: 16/16 succeeded in 0.09 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-LockTetriminoO: 16/16 succeeded in 0.24 seconds
+LockTetriminoO: 16/16 succeeded in 0.09 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240
 
-StageTetrimino: 400/400 succeeded in 5.73 seconds
+StageTetrimino: 400/400 succeeded in 1.91 seconds
 Min: 614/405 Max: 9501/5505 Mean: 1603/978 Median: 698/452
 
-StageTetriminoHidden: 24/24 succeeded in 0.38 seconds
+StageTetriminoHidden: 24/24 succeeded in 0.13 seconds
 Min: 614/405 Max: 623/414 Mean: 618/410 Median: 618/410
 
-IsPositionValid: 144/144 succeeded in 1.75 seconds
+IsPositionValid: 144/144 succeeded in 0.51 seconds
 Min: 91/55 Max: 426/246 Mean: 191/102 Median: 141/68
 
-LockTetrimino: 80/80 succeeded in 1.13 seconds
+LockTetrimino: 80/80 succeeded in 0.30 seconds
 Min: 339/240 Max: 339/240 Mean: 339/240 Median: 339/240

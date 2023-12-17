@@ -6,6 +6,8 @@ import subprocess
 import sys
 import time
 
+import gymtest
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
@@ -541,22 +543,10 @@ class Emulator:
             print(err, file=sys.stderr)
             return
         self.compiled = True
+        self.rom = open(self.binfile, 'rb').read()
 
     def run(self, rambuffer: bytearray):
-        emu = subprocess.Popen(
-            f"/common/gymtest/emu/ntools".split(),
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        result, error = emu.communicate(
-            input=open(self.binfile, "rb").read() + rambuffer
-        )
-        if b"Cycles" in error:
-            cycles = int(error.decode().split(": ")[1])
-        else:
-            raise Exception(error)
-        return result, cycles
+        return gymtest.run(self.rom, rambuffer)
 
 
 if __name__ == "__main__":
