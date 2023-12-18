@@ -19,6 +19,7 @@ class CheckLines:
     inputs = dict(
         playState=[0],
         vramRow=[0x20],
+        rowY=[0x20],
         tetriminoY=range(-2, 18),
         playfieldAddrHi=[0x04],
     )
@@ -34,9 +35,11 @@ class CheckLines:
         "toprow3",
         "toprow4",
     ]
-    results = list(i for i in range(0x300, 0x600)) + \
-        list(i for i in range(0x4A,0x4E)) + \
-        [0x4E]
+    results = (
+        list(i for i in range(0x300, 0x600))
+        + list(i for i in range(0x4A, 0x4E))
+        + [0x49, 0x4E, 0x52, 0x6F1]
+    )
 
 
 class CheckLinesCrunch:
@@ -46,6 +49,7 @@ class CheckLinesCrunch:
         playState=[0],
         practiseType=[0x8],
         vramRow=[0x20],
+        rowY=[0x20],
         tetriminoY=range(-2, 18),
         playfieldAddrHi=[0x04],
         crunchModifier=range(0x10),
@@ -62,9 +66,12 @@ class CheckLinesCrunch:
         "toprow3",
         "toprow4",
     ]
-    results = list(i for i in range(0x300, 0x600)) + \
-        list(i for i in range(0x4A,0x4E)) + \
-        [0x4E]
+    results = (
+        list(i for i in range(0x300, 0x600))
+        + list(i for i in range(0x4A, 0x4E))
+        + [0x49, 0x4E, 0x52, 0x6F1]
+    )
+
 
 class CheckLinesFloor:
     original = "emu/src/checklines_orig.asm"
@@ -73,10 +80,11 @@ class CheckLinesFloor:
         playState=[0],
         practiseType=[0x7],
         vramRow=[0x20],
+        rowY=[0x20],
         tetriminoY=range(-2, 18),
         playfieldAddrHi=[0x04],
         floorModifier=range(0xD),
-        currentPiece=[0x00, 0x05, 0x10,0x12, 0x01],
+        currentPiece_copy=[0x00, 0x05, 0x10, 0x12, 0x01],
     )
     playfields = [
         "empty",
@@ -90,9 +98,12 @@ class CheckLinesFloor:
         "toprow3",
         "toprow4",
     ]
-    results = list(i for i in range(0x300, 0x600)) + \
-        list(i for i in range(0x4A,0x4E)) + \
-        [0x4E]
+    results = (
+        list(i for i in range(0x300, 0x600))
+        + list(i for i in range(0x4A, 0x4E))
+        + [0x49, 0x4E, 0x52, 0x6F1]
+    )
+
 
 
 class Branch:
@@ -632,6 +643,7 @@ bbbbbbbbbb
 aaaaaaaaaa
 bbbbbbbbbb
 """
+
 
 def translate_playfield(pf: str) -> bytes:
     trans = {
