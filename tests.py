@@ -1,6 +1,7 @@
 import itertools
 import logging
 import pathlib
+import re
 import statistics
 import subprocess
 import sys
@@ -10,6 +11,88 @@ import gymtest
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
+
+class CheckLines:
+    original = "emu/src/checklines_orig.asm"
+    modified = "emu/src/checklines_mod.asm"
+    inputs = dict(
+        playState=[0],
+        vramRow=[0x20],
+        tetriminoY=range(-2, 18),
+        playfieldAddrHi=[0x04],
+    )
+    playfields = [
+        "empty",
+        "full",
+        "tetris",
+        "triple",
+        "double",
+        "single",
+        "toprow1",
+        "toprow2",
+        "toprow3",
+        "toprow4",
+    ]
+    results = list(i for i in range(0x300, 0x600)) + \
+        list(i for i in range(0x4A,0x4E)) + \
+        [0x4E]
+
+
+class CheckLinesCrunch:
+    original = "emu/src/checklines_orig.asm"
+    modified = "emu/src/checklines_mod.asm"
+    inputs = dict(
+        playState=[0],
+        practiseType=[0x8],
+        vramRow=[0x20],
+        tetriminoY=range(-2, 18),
+        playfieldAddrHi=[0x04],
+        crunchModifier=range(0x10),
+    )
+    playfields = [
+        "empty",
+        "full",
+        "tetris",
+        "triple",
+        "double",
+        "single",
+        "toprow1",
+        "toprow2",
+        "toprow3",
+        "toprow4",
+    ]
+    results = list(i for i in range(0x300, 0x600)) + \
+        list(i for i in range(0x4A,0x4E)) + \
+        [0x4E]
+
+class CheckLinesFloor:
+    original = "emu/src/checklines_orig.asm"
+    modified = "emu/src/checklines_mod.asm"
+    inputs = dict(
+        playState=[0],
+        practiseType=[0x7],
+        vramRow=[0x20],
+        tetriminoY=range(-2, 18),
+        playfieldAddrHi=[0x04],
+        floorModifier=range(0xD),
+        currentPiece=[0x00, 0x05, 0x10,0x12, 0x01],
+    )
+    playfields = [
+        "empty",
+        "full",
+        "tetris",
+        "triple",
+        "double",
+        "single",
+        "toprow1",
+        "toprow2",
+        "toprow3",
+        "toprow4",
+    ]
+    results = list(i for i in range(0x300, 0x600)) + \
+        list(i for i in range(0x4A,0x4E)) + \
+        [0x4E]
 
 
 class Branch:
@@ -29,7 +112,7 @@ class SpriteClear:
         playState=[0],
     )
     playfields = ["empty"]
-    results = list(i for i in range(0x200,0x300,0x04))
+    results = list(i for i in range(0x200, 0x300, 0x04))
 
 
 class StageTetrimino:
@@ -72,19 +155,6 @@ class IsPositionValid:
     )
     playfields = ["empty", "full"]
     results = [0x7FF]
-
-
-class LockTetrimino:
-    original = "emu/src/lock_original.asm"
-    modified = "emu/src/lock_modified.asm"
-    inputs = dict(
-        tetriminoY=[0, 2, 17, 18],
-        tetriminoX=[1, 2, 6, 7],
-        currentPiece=[0, 4, 10, 17, 18],
-        playfieldAddrHi=[4],
-    )
-    playfields = ["empty"]
-    results = list(i for i in range(0x400, 0x500)) + [0x57]
 
 
 class LockTetriminoGroup1:
@@ -206,7 +276,6 @@ class LockTetriminoO:
 
 testcases = [
     Branch,
-    LockTetrimino,
     LockTetriminoGroup1,
     LockTetriminoGroup2,
     LockTetriminoGroup3,
@@ -217,8 +286,10 @@ testcases = [
     StageTetrimino,
     StageTetriminoHidden,
     IsPositionValid,
-    LockTetrimino,
     SpriteClear,
+    CheckLines,
+    CheckLinesCrunch,
+    CheckLinesFloor,
 ]
 
 
@@ -446,9 +517,144 @@ RamMapper = dict(
     palFlag=0x784,
 )
 
+
+tetris = """
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+bbbbbbbbbb
+dddddddddd
+cccccccccc
+bbbbbbbbbb
+"""
+
+triple = """
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+dddddddddd
+cccccccccc
+bbbbbbbbbb
+"""
+
+double = """
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+cccccccccc
+bbbbbbbbbb
+"""
+
+single = """
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+bbbbbbbbbb
+"""
+
+
+toprow1 = """
+aaaaaaaaaa
+"""
+
+toprow2 = """
+aaaaaaaaaa
+bbbbbbbbbb
+"""
+
+toprow3 = """
+aaaaaaaaaa
+bbbbbbbbbb
+aaaaaaaaaa
+"""
+
+toprow4 = """
+aaaaaaaaaa
+bbbbbbbbbb
+aaaaaaaaaa
+bbbbbbbbbb
+"""
+
+def translate_playfield(pf: str) -> bytes:
+    trans = {
+        ".": 0xEF,
+        "b": 0x7B,
+        "c": 0x7C,
+        "d": 0x7D,
+    }
+    tiles = re.findall(r"[.bcd]", pf)
+    return bytes([trans[c] for c in tiles] + [0xEF for _ in range(0x100 - len(tiles))])
+
+
 playfields = dict(
     empty=bytes(0xEF for i in range(256)),
     full=bytes(0x7C for i in range(256)),
+    tetris=translate_playfield(tetris),
+    triple=translate_playfield(triple),
+    double=translate_playfield(double),
+    single=translate_playfield(single),
+    toprow1=translate_playfield(toprow1),
+    toprow2=translate_playfield(toprow2),
+    toprow3=translate_playfield(toprow3),
+    toprow4=translate_playfield(toprow4),
 )
 
 
@@ -568,7 +774,7 @@ class Emulator:
             print(err, file=sys.stderr)
             return
         self.compiled = True
-        self.rom = open(self.binfile, 'rb').read()
+        self.rom = open(self.binfile, "rb").read()
 
     def run(self, rambuffer: bytearray):
         return gymtest.run(self.rom, rambuffer)
