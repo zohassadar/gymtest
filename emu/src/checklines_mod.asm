@@ -75,7 +75,7 @@ playState_checkForCompletedRows:
 
 
 @checkIfRowCompleteLoopStart:
-        lda (playfieldAddr),y
+        lda playfield,y
         cmp #EMPTY_TILE
         beq @rowNotComplete
         iny
@@ -91,19 +91,15 @@ playState_checkForCompletedRows:
         ldy generalCounter
         dey
 @movePlayfieldDownOneRow:
-        lda (playfieldAddr),y
-        ldx #$0A
-        stx playfieldAddr
-        sta (playfieldAddr),y
-        lda #$00
-        sta playfieldAddr
+        lda playfield,y
+        sta playfield+10,y
         dey
         cpy #$FF
         bne @movePlayfieldDownOneRow
         lda #EMPTY_TILE
         ldy #$00
 @clearRowTopRow:
-        sta (playfieldAddr),y
+        sta playfield,y
         iny
         cpy #$0A
         bne @clearRowTopRow
