@@ -779,7 +779,7 @@ class Emulator:
             print(err, file=sys.stderr)
             return
         _, err = subprocess.Popen(
-            f"/usr/local/bin/ld65 -C /common/gymtest/emu/base.nes.cfg --dbgfile {dbgfile} -o {self.binfile} {objfile}".split(),
+            f"/usr/local/bin/ld65 -C emu/base.nes.cfg --dbgfile {dbgfile} -o {self.binfile} {objfile}".split(),
             stderr=subprocess.PIPE,
         ).communicate()
         if err:
